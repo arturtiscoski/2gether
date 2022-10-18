@@ -1,14 +1,17 @@
-// In App.js in a new project
-
 import * as React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, Image, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AgendaComponent from './src/Agenda/AgendaComponent';
+import Logo from './assets/logo.png'
 
 function HomeScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Image 
+        source={Logo}
+        style={styles.logo}
+        ></Image>
       <Text>Home Screen</Text>
       <Button title='Details' onPress={() => navigation.navigate('Details')}/>
     </View>
@@ -38,5 +41,12 @@ function App() {
     </NavigationContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  logo: {
+    width: 400,
+    height: 300,
+  },
+});
 
 export default App;

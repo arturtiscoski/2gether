@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Text, Button, Image, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import AgendaComponent from './src/Agenda/AgendaComponent';
+import Agenda from './src/Agenda/component/Agenda';
 import Logo from './assets/logo.png'
 
 function HomeScreen({ navigation }) {
@@ -36,7 +36,7 @@ function App() {
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Details" component={DetailsScreen} />
-        <Stack.Screen name="Agenda" component={AgendaComponent} />
+        <Stack.Screen name="Agenda" component={Agenda} />
       </Stack.Navigator>
     </NavigationContainer>
   );

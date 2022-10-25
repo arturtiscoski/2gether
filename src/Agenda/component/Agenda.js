@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, StatusBar } from 'react-native';
 import { Agenda } from 'react-native-calendars';
 import { Card } from 'react-native-paper';
+import AgendaHttpService from '../http/agenda-http';
 
 const timeToString = (time) => {
     const date = new Date(time);
@@ -11,38 +12,48 @@ const timeToString = (time) => {
 const AgendaComponent = () => {
     const [items, setItems] = React.useState({
       '2022-10-16': [{name: 'Colocar lixo pra rua'}],
-      '2022-10-17': [{name: 'Lavar banheiro', height: 80}],
+      '2022-10-17': [{name: 'Lavar banheiro', height: 400}],
       '2022-10-18': [],
-      '2022-10-19': [{name: 'sla porra vai toma no cu'}, {name: 'any js object'}]
+      '2022-10-19': [{name: 'teste de mudar cor'}, {name: 'any js object'}]
     });
+    
+    const loadAgenda = async () => {
+        const agenda = await AgendaHttpService.index({ id: 1 });
 
-    const loadItems = (day) => {
-
-        setTimeout(() => {
-            for (let i = -15; i < 85; i++) {
-                const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-                const strTime = timeToString(time);
-
-                if (!items[strTime]) {
-                    items[strTime] = [];
-
-                    const numItems = Math.floor(Math.random() * 3 + 1);
-                    for (let j = 0; j < numItems; j++) {
-                        items[strTime].push({
-                            name: 'Item for ' + strTime + ' #' + j,
-                            height: Math.max(10, Math.floor(Math.random() * 150)),
-                            day: strTime
-                        });
-                    }
-                }
-            }
-            const newItems = {};
-            Object.keys(items).forEach(key => {
-                newItems[key] = items[key];
-            });
-            setItems(newItems);
-        }, 1000);
+        console.log('agenda -> ', agenda.data.data);
     }
+
+    useEffect(() => {
+        loadAgenda();
+    }, [])
+
+    // const loadItems = (day) => {
+
+    //     setTimeout(() => {
+    //         for (let i = -15; i < 85; i++) {
+    //             const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+    //             const strTime = timeToString(time);
+
+    //             if (!items[strTime]) {
+    //                 items[strTime] = [];
+
+    //                 const numItems = Math.floor(Math.random() * 3 + 1);
+    //                 for (let j = 0; j < numItems; j++) {
+    //                     items[strTime].push({
+    //                         name: 'Item for ' + strTime + ' #' + j,
+    //                         height: Math.max(10, Math.floor(Math.random() * 150)),
+    //                         day: strTime
+    //                     });
+    //                 }
+    //             }
+    //         }
+    //         const newItems = {};
+    //         Object.keys(items).forEach(key => {
+    //             newItems[key] = items[key];
+    //         });
+    //         setItems(newItems);
+    //     }, 1000);
+    // }
 
     const renderItem = (item) => {
         return (

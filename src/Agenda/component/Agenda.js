@@ -1,44 +1,43 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, StatusBar } from 'react-native';
 import { Agenda } from 'react-native-calendars';
 import { Card } from 'react-native-paper';
 import AgendaHttpService from '../http/agenda-http';
-
-const timeToString = (time) => {
-    const date = new Date(time);
-    return date.toISOString().split('T')[0];
-}
+import moment from 'moment';
 
 const AgendaComponent = () => {
-    const [items, setItems] = React.useState({
-      '2022-10-16': [{name: 'Colocar lixo pra rua'}],
-      '2022-10-17': [{name: 'Lavar banheiro', height: 400}],
-      '2022-10-18': [],
-      '2022-10-19': [{name: 'teste de mudar cor'}, {name: 'any js object'}]
-    });
+    const [items, setItems] = useState({});
     
     const loadAgenda = async () => {
         try {
-            const agenda = await AgendaHttpService.index({ id: 1 });
+            setItems();
 
-            const handledItems = handleItems(agenda.data.data);
+            const agenda = await AgendaHttpService.index({});
 
-            console.log('handledItems -> ', handledItems);
+            if (agenda?.data?.data) {
+                const handledItems = await handleItems(agenda.data.data);
+
+                console.log('handledItems -> ', handledItems);
+    
+                setItems(handledItems)
+            }
         } catch (error) {
             console.log('error -> ', error);
         }
     }
 
-    const handleItems = (items) => {
-        const returnItems = [];
+    const handleItems = async (items) => {
+        const returnItems = {};
 
         for (let i = 0; i < items.length; i++) {
             const item = items[i];
-            
+
+            returnItems[item.momento] = [];
+
             for (let j = 0; j < item.agendaItems.length; j++) {
                 const agendaItem = item.agendaItems[j];
-                
-                returnItems[item.momento] = { ...returnItems[item.momento], name: agendaItem.name }
+
+                returnItems[item.momento].push({ name: agendaItem.name })
             }
         }
 
@@ -48,34 +47,6 @@ const AgendaComponent = () => {
     useEffect(() => {
         loadAgenda();
     }, [])
-
-    // const loadItems = (day) => {
-
-    //     setTimeout(() => {
-    //         for (let i = -15; i < 85; i++) {
-    //             const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-    //             const strTime = timeToString(time);
-
-    //             if (!items[strTime]) {
-    //                 items[strTime] = [];
-
-    //                 const numItems = Math.floor(Math.random() * 3 + 1);
-    //                 for (let j = 0; j < numItems; j++) {
-    //                     items[strTime].push({
-    //                         name: 'Item for ' + strTime + ' #' + j,
-    //                         height: Math.max(10, Math.floor(Math.random() * 150)),
-    //                         day: strTime
-    //                     });
-    //                 }
-    //             }
-    //         }
-    //         const newItems = {};
-    //         Object.keys(items).forEach(key => {
-    //             newItems[key] = items[key];
-    //         });
-    //         setItems(newItems);
-    //     }, 1000);
-    // }
 
     const renderItem = (item) => {
         return (
@@ -96,7 +67,12 @@ const AgendaComponent = () => {
             <Agenda
                 items={items}
                 // loadItemsForMonth={loadItems}
-                selected={'2022-10-16'}
+                onDayPress={day => {
+                    console.log('day pressed');
+                }}
+                onDayLongPress={() => console.log('looooooong press')}
+                selected={moment().format()}
+                minDate={moment().format()}
                 refreshControl={null}
                 showClosingKnob={true}
                 refreshing={false}

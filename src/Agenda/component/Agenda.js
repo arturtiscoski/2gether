@@ -18,9 +18,31 @@ const AgendaComponent = () => {
     });
     
     const loadAgenda = async () => {
-        const agenda = await AgendaHttpService.index({ id: 1 });
+        try {
+            const agenda = await AgendaHttpService.index({ id: 1 });
 
-        console.log('agenda -> ', agenda.data.data);
+            const handledItems = handleItems(agenda.data.data);
+
+            console.log('handledItems -> ', handledItems);
+        } catch (error) {
+            console.log('error -> ', error);
+        }
+    }
+
+    const handleItems = (items) => {
+        const returnItems = [];
+
+        for (let i = 0; i < items.length; i++) {
+            const item = items[i];
+            
+            for (let j = 0; j < item.agendaItems.length; j++) {
+                const agendaItem = item.agendaItems[j];
+                
+                returnItems[item.momento] = { ...returnItems[item.momento], name: agendaItem.name }
+            }
+        }
+
+        return returnItems;
     }
 
     useEffect(() => {

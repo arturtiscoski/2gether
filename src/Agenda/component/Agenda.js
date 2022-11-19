@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, StatusBar, Pressable } from 'react-native';
 import { Agenda } from 'react-native-calendars';
-import { Card } from 'react-native-paper';
+import { Card, Modal } from 'react-native-paper';
 import AgendaHttpService from '../http/agenda-http';
 import moment from 'moment';
 
-const AgendaComponent = () => {
+const AgendaComponent = ({ navigation }) => {
     const [items, setItems] = useState({});
     
     const loadAgenda = async () => {
@@ -66,13 +66,22 @@ const AgendaComponent = () => {
         <View style={styles.container}>
             <Agenda
                 items={items}
-                // loadItemsForMonth={loadItems}
+                renderEmptyData={() => 
+                    <TouchableOpacity style={styles.item}>
+                        <Card>
+                            <Card.Content>
+                                <View>
+                                    <Text style={{ textAlign: 'center' }}>Nenhum item cadastrado neste dia</Text>
+                                </View>
+                            </Card.Content>
+                        </Card>
+                    </TouchableOpacity>
+                }
                 onDayPress={day => {
                     console.log('day pressed');
                 }}
-                onDayLongPress={() => console.log('looooooong press')}
+                onDayLongPress={(day) => navigation.navigate('Cadastro de dias', { dia: moment(day).format('DD/MM/YYYY') })}
                 selected={moment().format()}
-                minDate={moment().format()}
                 refreshControl={null}
                 showClosingKnob={true}
                 refreshing={false}

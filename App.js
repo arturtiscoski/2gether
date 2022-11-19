@@ -5,19 +5,20 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Agenda from './src/Agenda/component/Agenda';
 import Logo from './assets/logo.png'
 import { Button, Surface } from 'react-native-paper';
+import LoginScreen from './src/Agenda/component/AgendaCadastroDia';
 
 function HomeScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Deixe sua vida em conjunto mais fácil e tranquila!</Text>
       <Image
         source={Logo}
         style={styles.logo}
       ></Image>
-      <Text>Home Screen</Text>
       <Button
         mode='elevated'
         style={styles.button}
-        title='Details' onPress={() => navigation.navigate('Details')}>Details</Button>
+        title='Menu de agendas' onPress={() => navigation.navigate('Menu de agendas')}>Menu de agendas</Button>
     </View>
   );
 }
@@ -26,8 +27,8 @@ function DetailsScreen({ navigation }) {
   return (
     <View style={styles.MainView}>
       <Surface style={styles.surface}>
-        <Text style={styles.title}>Details Screen</Text>
-        <Button style={styles.button} mode='elevated' title='Home' onPress={() => navigation.navigate('Home')} >Home</Button>
+        <Button style={styles.button} mode='elevated' title='Cadastro de dias' onPress={() => navigation.navigate('Cadastro de dias')} >Cadastro de dias</Button>
+        <Button style={styles.button} mode='elevated' title='Agenda' onPress={() => navigation.navigate('Agenda')} >Agenda</Button>
         <Button style={styles.button} mode='elevated' title='Agenda' onPress={() => navigation.navigate('Agenda')} >Agenda</Button>
       </Surface>
     </View>
@@ -39,10 +40,15 @@ const Stack = createNativeStackNavigator();
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Details" component={DetailsScreen} />
+      <Stack.Navigator initialRouteName="2Gether">
+        <Stack.Screen name="2Gether" component={HomeScreen} />
+        <Stack.Screen name="Menu de agendas" component={DetailsScreen} />
         <Stack.Screen name="Agenda" component={Agenda} />
+        <Stack.Screen 
+          name="Cadastro de dias" 
+          component={LoginScreen} 
+          options={({ route }) => ({ title: `Data ${route.params.dia}` })}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -53,7 +59,7 @@ const styles = StyleSheet.create({
     flex: 1, 
     alignItems: 'center', 
     justifyContent: 'center',
-    backgroundColor: "#FFD2D9",
+    backgroundColor: "#fff",
   },
   title: {
     fontSize: 30,
@@ -66,16 +72,15 @@ const styles = StyleSheet.create({
     width: 200,
     height: 40,
     margin: 10,
-    backgroundColor: "#ffb6c1",
+    backgroundColor: "#f4f4f4",
   },
   surface: {
     borderRadius: 10,
     alignItems: "center",
-    backgroundColor: "#FFE2E6",
+    backgroundColor: "#fff",
     width: 300,
-    height: 200,
+    // height: 200,
     padding: 20,
-
   }
 });
 

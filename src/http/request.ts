@@ -1,7 +1,10 @@
 import axios, { AxiosResponse, AxiosRequestConfig, AxiosInstance } from 'axios';
 
+//PROD
 const API_URL = 'https://api-2gether.vercel.app/';
 
+//DEV
+// const API_URL = 'http://localhost:3000';
 interface RequestParams {
     method: string;
     path: string;

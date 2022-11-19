@@ -1,9 +1,11 @@
 import Request from '../../http/request';
 
 export default class AgendaHttpService {
-    private static uri = 'listAgenda';
-
     public static index(params: { id?: number, day?: string }) {
-        return Request.get(this.uri, params);
+        return Request.get('/listAgenda', params);
+    }
+
+    public static save(params: { momento, name }) {
+        return Request.post('/saveAgenda', params);
     }
 }

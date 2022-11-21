@@ -9,7 +9,7 @@ export default class AgendaHttpService {
         return Request.post('/saveAgenda', params);
     }
 
-    public static saveItem(params: { agendaId, name, id }) {
+    public static saveItem(params: { agendaId, name, id, remove }) {
         return Request.post('/saveAgendaItems', params);
     }
 

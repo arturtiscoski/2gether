@@ -67,7 +67,11 @@ const LoginScreen = ({ route, navigation }) => {
     };
 
     const onRemove = (index) => {
-        const newLinhas = linhas.filter((_, i)=> i != index);
+        const newLinhas = [ ...linhas ];
+
+        newLinhas[index] = { ...newLinhas[index], remove: true }
+
+        console.log('newLinhas -> ', newLinhas);
 
         setLinhas([...newLinhas]);
     };
@@ -81,23 +85,28 @@ const LoginScreen = ({ route, navigation }) => {
             <View style={styles.container}>
                 <Text style={styles.label}>Descrição do evento</Text>
                 {linhas &&
-                    linhas.map((item, index) => 
-                        <View style={{ flexDirection: 'row' }}>
-                            <TextInput
-                                key={index}
-                                style={[styles.input]}
-                                placeholder={'Digite uma breve descrição'}
-                                onChangeText={text => onChangeText(text, index, 'name')}
-                                value={item.name}
-                            />
-                            <Icon 
-                                name="minuscircleo" 
-                                style={{ marginTop: 5, marginLeft: 10 }} 
-                                size={30} 
-                                color="#00BDF0"
-                                onPress={() => onRemove(index)} />
-                        </View>
-                    )
+                    linhas.map((item, index) => {
+                        if (item.remove) {
+                            return
+                        }
+                        return (
+                            <View style={{ flexDirection: 'row' }}>
+                                <TextInput
+                                    key={index}
+                                    style={[styles.input]}
+                                    placeholder={'Digite uma breve descrição'}
+                                    onChangeText={text => onChangeText(text, index, 'name')}
+                                    value={item.name}
+                                />
+                                <Icon 
+                                    name="minuscircleo" 
+                                    style={{ marginTop: 5, marginLeft: 10 }} 
+                                    size={30} 
+                                    color="#00BDF0"
+                                    onPress={() => onRemove(index)} />
+                            </View>
+                        )
+                    })
                 }
                 <View style={{ flexDirection: "row" }}>
                     <Pressable style={styles.buttonNew} onPress={() => setLinhas([...linhas, {id: undefined, name: ''}])}>

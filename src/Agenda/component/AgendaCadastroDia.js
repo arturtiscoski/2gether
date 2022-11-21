@@ -24,7 +24,13 @@ const LoginScreen = ({ route }) => {
 
             console.log('params -> ', params);
 
-            await AgendaHttpService.save(params);
+            const agenda = await AgendaHttpService.save(params);
+
+            console.log('agenda -> ', agenda.data.id)
+
+            const response = await AgendaHttpService.saveItem({ agendaId: agenda.data.id, ...data });
+
+            console.log('response -> ', response);
             alert('Sucesso!');
         } catch (error) {
             console.log('erro -> ', error)

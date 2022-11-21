@@ -80,7 +80,7 @@ const AgendaComponent = ({ navigation }) => {
                 onDayPress={day => {
                     console.log('day pressed');
                 }}
-                onDayLongPress={(day) => navigation.navigate('Cadastro de dias', { dia: moment(day).format('DD/MM/YYYY') })}
+                onDayLongPress={(day) => {console.log('dia -> ',day);  navigation.navigate('Cadastro de dias', { dia: moment(day.dateString, 'YYYY-MM-DD').format('DD/MM/YYYY') })}}
                 selected={moment().format()}
                 refreshControl={null}
                 showClosingKnob={true}

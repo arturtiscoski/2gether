@@ -8,4 +8,8 @@ export default class AgendaHttpService {
     public static save(params: { momento, name }) {
         return Request.post('/saveAgenda', params);
     }
+
+    public static saveItem(params: { agendaId, name }) {
+        return Request.post('/saveAgendaItems', params);
+    }
 }

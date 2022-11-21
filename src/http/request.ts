@@ -1,7 +1,7 @@
 import axios, { AxiosResponse, AxiosRequestConfig, AxiosInstance } from 'axios';
 
 //PROD
-const API_URL = 'https://api-2gether.vercel.app/';
+const API_URL = 'https://api-2gether-theta.vercel.app';
 
 //DEV
 // const API_URL = 'http://localhost:3000';

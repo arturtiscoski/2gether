@@ -12,7 +12,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     backgroundColor: '#fff',
     paddingHorizontal: 8,
-    borderRadius: 8
+    borderRadius: 8,
+    marginBottom: 10,
+    width: '85%'
   },
   label: {
     fontSize: 14,
@@ -59,7 +61,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     letterSpacing: 0.25,
     color: 'white',
-  },
+  }
 })
 
 export default styles

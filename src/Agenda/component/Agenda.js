@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, StatusBar, Pressable } from 'react-native';
 import { Agenda } from 'react-native-calendars';
-import { Card, Modal } from 'react-native-paper';
+import { ActivityIndicator, Card, Modal } from 'react-native-paper';
 import AgendaHttpService from '../http/agenda-http';
 import moment from 'moment';
 
-const AgendaComponent = ({ navigation }) => {
+const AgendaComponent = ({ route, navigation }) => {
     const [items, setItems] = useState({});
+    const [loading, setLoading] = useState(false);
+    const params = route.params;
     
     const loadAgenda = async () => {
         try {
+            setLoading(true);
             setItems();
 
             const agenda = await AgendaHttpService.index({});
@@ -21,7 +24,10 @@ const AgendaComponent = ({ navigation }) => {
     
                 setItems(handledItems)
             }
+
+            setLoading(false);
         } catch (error) {
+            setLoading(false);
             console.log('error -> ', error);
         }
     }
@@ -48,6 +54,10 @@ const AgendaComponent = ({ navigation }) => {
         loadAgenda();
     }, [])
 
+    useEffect(() => {
+        loadAgenda();
+    }, [params?.onHide])
+
     const renderItem = (item) => {
         return (
             <TouchableOpacity style={styles.item}>
@@ -58,6 +68,7 @@ const AgendaComponent = ({ navigation }) => {
                         </View>
                     </Card.Content>
                 </Card>
+                {loading && <ActivityIndicator style={{ marginTop: 20 }} color='#00BDF0'/>}
             </TouchableOpacity>
         );
     }
@@ -75,6 +86,7 @@ const AgendaComponent = ({ navigation }) => {
                                 </View>
                             </Card.Content>
                         </Card>
+                        {loading && <ActivityIndicator style={{ marginTop: 20 }} color='#00BDF0'/>}
                     </TouchableOpacity>
                 }
                 onDayPress={day => {

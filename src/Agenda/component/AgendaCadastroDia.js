@@ -1,68 +1,103 @@
 // @flow
-import React, { useEffect } from 'react'
-import { Alert, Text, TextInput, View, Button } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Text, TextInput, View, Button, Pressable } from 'react-native'
 import styles from './LoginScreen.style'
-import { useForm } from 'react-hook-form'
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from 'yup'
 import AgendaHttpService from '../http/agenda-http';
 import moment from 'moment';
+import { ActivityIndicator } from 'react-native-paper';
 
-const fieldValidationSchema = yup.object().shape({
-    name: yup
-        .string()
-        .required('A descrição não pode ficar vazia'),
-})
+const LoginScreen = ({ route, navigation }) => {
+    const [ linhas, setLinhas ] = useState([]);
+    const [ loading, setLoading ] = useState(false);
 
-const LoginScreen = ({ route }) => {
-    const { register, setValue, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(fieldValidationSchema) })
-    const onSubmit = async (data) => {
-        console.log(data);
+    const onSubmit = async () => {
+        console.log('onSubmit -> ',linhas);
 
         try {
-            const params = { momento: moment(route.params.dia, 'DD/MM/YYYY').format('YYYY-MM-DD'), ...data }
+            setLoading(true);
+            const finalLinhas = linhas.filter((linha) => !(linha.name == ''));
 
-            console.log('params -> ', params);
+            if (finalLinhas.length > 0) {
+                const params = { momento: moment(route.params.dia, 'DD/MM/YYYY').format('YYYY-MM-DD') }
 
-            const agenda = await AgendaHttpService.save(params);
+                const agenda = await AgendaHttpService.save(params);
 
-            console.log('agenda -> ', agenda.data.id)
+                for (let i = 0; i < finalLinhas.length; i++) {
+                    const linha = finalLinhas[i];
+                    
+                    await AgendaHttpService.saveItem({ agendaId: agenda.data.id, ...linha });
+                }
 
-            const response = await AgendaHttpService.saveItem({ agendaId: agenda.data.id, ...data });
-
-            console.log('response -> ', response);
-            alert('Sucesso!');
+                setLoading(false);
+                navigation.navigate('Agenda', { onHide: () => Math.random() });
+            }
         } catch (error) {
             console.log('erro -> ', error)
+            setLoading(false);
             alert('Erro: ' + error.message);
         }
     }
 
+    const onLoad = async () => {
+        try {
+            setLoading(true);
+            const params = { momento: moment(route.params.dia, 'DD/MM/YYYY').format('YYYY-MM-DD') }
+
+            const response = await AgendaHttpService.getItems(params);
+
+            const data = response?.data?.data[0].agendaItems;
+            
+            setLinhas(data)
+            setLoading(false);
+        } catch (error) {
+            setLoading(false);
+            alert('Error: ' + error.message);
+        }
+    }
+
+    const onChangeText = (value, index, field) => {
+        const obj = linhas[index];
+
+        obj[field] = value;
+
+        linhas[index] = obj;
+
+        setLinhas([...linhas]);
+    };
+
+    useEffect(() => {
+        onLoad();
+    }, [])
+
     return (
         <View style={styles.mainContainer}>
-            <TextField
-                label={'Descrição do evento'}
-                error={errors?.name}
-                placeholder={'Digite uma breve descrição'}
-                onChangeText={text => setValue('name', text)}
-                input="name"
-                register={register}
-            />
-            <Button onPress={handleSubmit(onSubmit)} title={'Continuar'} />
+            <View style={styles.container}>
+                <Text style={styles.label}>Descrição do evento</Text>
+                {linhas &&
+                    linhas.map((item, index) => 
+                        <>
+                            <TextInput
+                                key={index}
+                                style={[styles.input]}
+                                placeholder={'Digite uma breve descrição'}
+                                onChangeText={text => onChangeText(text, index, 'name')}
+                                value={item.name}
+                            />
+                        </>
+                    )
+                }
+                <View style={{ flexDirection: "row" }}>
+                    <Pressable style={styles.buttonNew} onPress={onSubmit}>
+                        <Text style={styles.text}>Nova linha</Text>
+                    </Pressable>
+                    <Pressable style={styles.button} onPress={onSubmit}>
+                        <Text style={styles.text}>Atualizar novos pontos</Text>
+                    </Pressable>
+                </View>
+                {loading && <ActivityIndicator style={{ marginTop: 20 }} color='#00BDF0'/>}
+            </View>
         </View>
     )
 }
-
-const TextField = ({ error, label, input, register, ...inputProps }) => (
-    <View style={styles.container}>
-        <Text style={styles.label}>{label}</Text>
-        <TextInput
-            style={[styles.input, !!error && styles.borderError]}
-            {...register(input, { required: true })}
-            {...inputProps}
-        />
-        {!!error && <Text style={styles.errorMessage}>{error.message}</Text>}
-    </View>
-)
 
 export default LoginScreen

@@ -33,7 +33,33 @@ const styles = StyleSheet.create({
     color: 'rgba(200,0,50,1)',
     textAlign: 'center',
     marginTop: 5
-  }
+  },
+  buttonNew: {
+    alignSelf: 'flex-start',
+    marginTop: 15,
+    marginRight: 22,
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderRadius: 10,
+    elevation: 3,
+    backgroundColor: '#00BDF0',
+  },
+  button: {
+    alignSelf: 'flex-end',
+    marginTop: 15,
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderRadius: 10,
+    elevation: 3,
+    backgroundColor: '#00BDF0',
+  },
+  text: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'white',
+  },
 })
 
 export default styles

@@ -5,11 +5,15 @@ export default class AgendaHttpService {
         return Request.get('/listAgenda', params);
     }
 
-    public static save(params: { momento, name }) {
+    public static save(params: { momento }) {
         return Request.post('/saveAgenda', params);
     }
 
-    public static saveItem(params: { agendaId, name }) {
+    public static saveItem(params: { agendaId, name, id }) {
         return Request.post('/saveAgendaItems', params);
+    }
+
+    public static getItems(params: { momento }) {
+        return Request.get('/getItems', params);
     }
 }

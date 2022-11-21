@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 10,
     elevation: 3,
-    backgroundColor: '#00BDF0',
+    backgroundColor: '#455471',
   },
   button: {
     alignSelf: 'flex-end',
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 10,
     elevation: 3,
-    backgroundColor: '#00BDF0',
+    backgroundColor: '#455471',
   },
   text: {
     fontSize: 16,

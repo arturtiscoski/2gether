@@ -16,6 +16,7 @@ function HomeScreen({ navigation }) {
         style={styles.logo}
       ></Image>
       <Button
+        textColor='#455471'
         mode='elevated'
         style={styles.button}
         title='Menu' onPress={() => navigation.navigate('Menu')}>Menu</Button>
@@ -27,9 +28,9 @@ function DetailsScreen({ navigation }) {
   return (
     <View style={styles.MainView}>
       <Surface style={styles.surface}>
-        <Button style={styles.button} mode='elevated' title='Agenda' onPress={() => navigation.navigate('Agenda')} >Agenda</Button>
-        <Button style={styles.button} mode='elevated' title='Outra parada' onPress={() => navigation.navigate('Outra parada')} >Outra parada</Button>
-        <Button style={styles.button} mode='elevated' title='Ainda outra parada' onPress={() => navigation.navigate('Ainda outra parada')} >Ainda outra parada</Button>
+        <Button textColor='#455471' style={styles.button} mode='elevated' title='Agenda' onPress={() => navigation.navigate('Agenda')} >Agenda</Button>
+        <Button textColor='#455471' style={styles.button} mode='elevated' title='Outra parada' onPress={() => navigation.navigate('Outra parada')} >Outra parada</Button>
+        <Button textColor='#455471' style={styles.button} mode='elevated' title='Ainda outra parada' onPress={() => navigation.navigate('Ainda outra parada')} >Ainda outra parada</Button>
       </Surface>
     </View>
   );

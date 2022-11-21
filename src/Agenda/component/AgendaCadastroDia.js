@@ -102,7 +102,7 @@ const LoginScreen = ({ route, navigation }) => {
                                     name="minuscircleo" 
                                     style={{ marginTop: 5, marginLeft: 10 }} 
                                     size={30} 
-                                    color="#00BDF0"
+                                    color="#455471"
                                     onPress={() => onRemove(index)} />
                             </View>
                         )
@@ -116,7 +116,7 @@ const LoginScreen = ({ route, navigation }) => {
                         <Text style={styles.text}>Atualizar novos pontos</Text>
                     </Pressable>
                 </View>
-                {loading && <ActivityIndicator style={{ marginTop: 20 }} color='#00BDF0'/>}
+                {loading && <ActivityIndicator style={{ marginTop: 20 }} color='#455471'/>}
             </View>
         </View>
     )

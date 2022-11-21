@@ -50,10 +50,6 @@ const AgendaComponent = ({ route, navigation }) => {
         return returnItems;
     }
 
-    // useEffect(() => {
-    //     loadAgenda();
-    // }, [])
-
     useEffect(() => {
         loadAgenda();
     }, [params?.onHide])
@@ -68,7 +64,7 @@ const AgendaComponent = ({ route, navigation }) => {
                         </View>
                     </Card.Content>
                 </Card>
-                {loading && <ActivityIndicator style={{ marginTop: 20 }} color='#00BDF0'/>}
+                {loading && <ActivityIndicator style={{ marginTop: 20 }} color='#455471'/>}
             </TouchableOpacity>
         );
     }
@@ -76,6 +72,10 @@ const AgendaComponent = ({ route, navigation }) => {
     return (
         <View style={styles.container}>
             <Agenda
+                theme={{
+                    selectedDayBackgroundColor: '#455471',
+                    todayTextColor: '#000'
+                }}
                 items={items}
                 renderEmptyData={() => 
                     <TouchableOpacity style={styles.item}>
@@ -86,7 +86,7 @@ const AgendaComponent = ({ route, navigation }) => {
                                 </View>
                             </Card.Content>
                         </Card>
-                        {loading && <ActivityIndicator style={{ marginTop: 20 }} color='#00BDF0'/>}
+                        {loading && <ActivityIndicator style={{ marginTop: 20 }} color='#455471'/>}
                     </TouchableOpacity>
                 }
                 onDayPress={day => {

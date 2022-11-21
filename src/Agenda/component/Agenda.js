@@ -50,9 +50,9 @@ const AgendaComponent = ({ route, navigation }) => {
         return returnItems;
     }
 
-    useEffect(() => {
-        loadAgenda();
-    }, [])
+    // useEffect(() => {
+    //     loadAgenda();
+    // }, [])
 
     useEffect(() => {
         loadAgenda();

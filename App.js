@@ -18,7 +18,7 @@ function HomeScreen({ navigation }) {
       <Button
         mode='elevated'
         style={styles.button}
-        title='Menu de agendas' onPress={() => navigation.navigate('Menu de agendas')}>Menu de agendas</Button>
+        title='Menu' onPress={() => navigation.navigate('Menu')}>Menu</Button>
     </View>
   );
 }
@@ -27,9 +27,9 @@ function DetailsScreen({ navigation }) {
   return (
     <View style={styles.MainView}>
       <Surface style={styles.surface}>
-        <Button style={styles.button} mode='elevated' title='Cadastro de dias' onPress={() => navigation.navigate('Cadastro de dias')} >Cadastro de dias</Button>
         <Button style={styles.button} mode='elevated' title='Agenda' onPress={() => navigation.navigate('Agenda')} >Agenda</Button>
-        <Button style={styles.button} mode='elevated' title='Agenda' onPress={() => navigation.navigate('Agenda')} >Agenda</Button>
+        <Button style={styles.button} mode='elevated' title='Outra parada' onPress={() => navigation.navigate('Outra parada')} >Outra parada</Button>
+        <Button style={styles.button} mode='elevated' title='Ainda outra parada' onPress={() => navigation.navigate('Ainda outra parada')} >Ainda outra parada</Button>
       </Surface>
     </View>
   );
@@ -42,7 +42,7 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="2Gether">
         <Stack.Screen name="2Gether" component={HomeScreen} />
-        <Stack.Screen name="Menu de agendas" component={DetailsScreen} />
+        <Stack.Screen name="Menu" component={DetailsScreen} />
         <Stack.Screen name="Agenda" component={Agenda} />
         <Stack.Screen 
           name="Cadastro de dias" 

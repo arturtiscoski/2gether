@@ -3,11 +3,12 @@ import { View, Text, Image, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Agenda from "./src/Agenda/component/Agenda";
-import ListaCompras from "./src/Agenda/component/ListaCompras";
+import ListaCompras from "./src/ListaCompras/component/ListaCompras";
 import Logo from "./assets/logo.png";
 import { Button, Surface } from "react-native-paper";
 import LoginScreen from "./src/Agenda/component/AgendaCadastroDia";
 import Estoque from './src/Estoque/component/Estoque';
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 function HomeScreen({ navigation }) {
     return (
@@ -69,28 +70,30 @@ const Stack = createNativeStackNavigator();
 
 function App() {
     return (
-        <NavigationContainer>
-            <Stack.Navigator initialRouteName="2Gether">
-                <Stack.Screen name="2Gether" component={HomeScreen} />
-                <Stack.Screen name="Menu" component={DetailsScreen} />
-                <Stack.Screen name="Agenda" component={Agenda} />
-                <Stack.Screen
-                    name="Lista de Compras"
-                    component={ListaCompras}
-                />
-                <Stack.Screen
-                    name="Cadastro de dias"
-                    component={LoginScreen}
-                    options={({ route }) => ({
-                        title: `Data ${route.params.dia}`,
-                    })}
-                />
-                <Stack.Screen 
-                    name="Estoque" 
-                    component={Estoque} 
-                />
-            </Stack.Navigator>
-        </NavigationContainer>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+            <NavigationContainer>
+                <Stack.Navigator initialRouteName="2Gether">
+                    <Stack.Screen name="2Gether" component={HomeScreen} />
+                    <Stack.Screen name="Menu" component={DetailsScreen} />
+                    <Stack.Screen name="Agenda" component={Agenda} />
+                    <Stack.Screen
+                        name="Lista de Compras"
+                        component={ListaCompras}
+                    />
+                    <Stack.Screen
+                        name="Cadastro de dias"
+                        component={LoginScreen}
+                        options={({ route }) => ({
+                            title: `Data ${route.params.dia}`,
+                        })}
+                    />
+                    <Stack.Screen 
+                        name="Estoque" 
+                        component={Estoque} 
+                    />
+                </Stack.Navigator>
+            </NavigationContainer>
+        </GestureHandlerRootView>
     );
 }
 

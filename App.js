@@ -6,6 +6,7 @@ import Agenda from './src/Agenda/component/Agenda';
 import Logo from './assets/logo.png'
 import { Button, Surface } from 'react-native-paper';
 import LoginScreen from './src/Agenda/component/AgendaCadastroDia';
+import Estoque from './src/Estoque/component/Estoque';
 
 function HomeScreen({ navigation }) {
   return (
@@ -30,7 +31,7 @@ function DetailsScreen({ navigation }) {
       <Surface style={styles.surface}>
         <Button textColor='#455471' style={styles.button} mode='elevated' title='Agenda' onPress={() => navigation.navigate('Agenda')} >Agenda</Button>
         <Button textColor='#455471' style={styles.button} mode='elevated' title='Outra parada' onPress={() => navigation.navigate('Outra parada')} >Outra parada</Button>
-        <Button textColor='#455471' style={styles.button} mode='elevated' title='Ainda outra parada' onPress={() => navigation.navigate('Ainda outra parada')} >Ainda outra parada</Button>
+        <Button textColor='#455471' style={styles.button} mode='elevated' title='Estoque' onPress={() => navigation.navigate('Estoque')} >Estoque</Button>
       </Surface>
     </View>
   );
@@ -50,6 +51,7 @@ function App() {
           component={LoginScreen} 
           options={({ route }) => ({ title: `Data ${route.params.dia}` })}
         />
+        <Stack.Screen name="Estoque" component={Estoque} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,60 +1,60 @@
 // @flow
 import React, { useEffect, useState } from 'react'
 import { Text, TextInput, View, Button, Pressable } from 'react-native'
-import styles from './LoginScreen.style'
-import AgendaHttpService from '../http/agenda-http';
+import styles from './estoque.style'
+// import AgendaHttpService from '../http/agenda-http';
 import moment from 'moment';
 import { ActivityIndicator } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/AntDesign';
 
-const LoginScreen = ({ route, navigation }) => {
-    const [ linhas, setLinhas ] = useState([]);
+const Estoque = ({ route, navigation }) => {
+    const [ linhas, setLinhas ] = useState([{ id: undefined, name: '' }, { id: undefined, name: '' }, { id: undefined, name: '' }]);
     const [ loading, setLoading ] = useState(false);
 
-    const onSubmit = async () => {
-        console.log('onSubmit -> ',linhas);
+    // const onSubmit = async () => {
+    //     console.log('onSubmit -> ',linhas);
 
-        try {
-            setLoading(true);
-            const finalLinhas = linhas.filter((linha) => !(linha.name == ''));
+    //     try {
+    //         setLoading(true);
+    //         const finalLinhas = linhas.filter((linha) => !(linha.name == ''));
 
-            if (finalLinhas.length > 0) {
-                const params = { momento: moment(route.params.dia, 'DD/MM/YYYY').format('YYYY-MM-DD') }
+    //         if (finalLinhas.length > 0) {
+    //             const params = { momento: moment(route.params.dia, 'DD/MM/YYYY').format('YYYY-MM-DD') }
 
-                const agenda = await AgendaHttpService.save(params);
+    //             const agenda = await AgendaHttpService.save(params);
 
-                for (let i = 0; i < finalLinhas.length; i++) {
-                    const linha = finalLinhas[i];
+    //             for (let i = 0; i < finalLinhas.length; i++) {
+    //                 const linha = finalLinhas[i];
                     
-                    await AgendaHttpService.saveItem({ agendaId: agenda.data.id, ...linha });
-                }
+    //                 await AgendaHttpService.saveItem({ agendaId: agenda.data.id, ...linha });
+    //             }
 
-                setLoading(false);
-                navigation.navigate('Agenda', { onHide: () => Math.random() });
-            }
-        } catch (error) {
-            console.log('erro -> ', error)
-            setLoading(false);
-            alert('Erro: ' + error.message);
-        }
-    }
+    //             setLoading(false);
+    //             navigation.navigate('Agenda', { onHide: () => Math.random() });
+    //         }
+    //     } catch (error) {
+    //         console.log('erro -> ', error)
+    //         setLoading(false);
+    //         alert('Erro: ' + error.message);
+    //     }
+    // }
 
-    const onLoad = async () => {
-        try {
-            setLoading(true);
-            const params = { momento: moment(route.params.dia, 'DD/MM/YYYY').format('YYYY-MM-DD') }
+    // const onLoad = async () => {
+    //     try {
+    //         setLoading(true);
+    //         const params = { momento: moment(route.params.dia, 'DD/MM/YYYY').format('YYYY-MM-DD') }
 
-            const response = await AgendaHttpService.getItems(params);
+    //         const response = await AgendaHttpService.getItems(params);
 
-            const data = response?.data?.data[0].agendaItems;
+    //         const data = response?.data?.data[0].agendaItems;
             
-            setLinhas(data)
-            setLoading(false);
-        } catch (error) {
-            setLoading(false);
-            alert('Error: ' + error.message);
-        }
-    }
+    //         setLinhas(data)
+    //         setLoading(false);
+    //     } catch (error) {
+    //         setLoading(false);
+    //         alert('Error: ' + error.message);
+    //     }
+    // }
 
     const onChangeText = (value, index, field) => {
         const obj = linhas[index];
@@ -77,13 +77,12 @@ const LoginScreen = ({ route, navigation }) => {
     };
 
     useEffect(() => {
-        onLoad();
+        // onLoad();
     }, [])
 
     return (
         <View style={styles.mainContainer}>
             <View style={styles.container}>
-                <Text style={styles.label}>Descrição do evento</Text>
                 {linhas &&
                     linhas.map((item, index) => {
                         if (item.remove) {
@@ -101,7 +100,7 @@ const LoginScreen = ({ route, navigation }) => {
                                     name="minuscircleo" 
                                     style={{ marginTop: 5, marginLeft: 10 }} 
                                     size={30} 
-                                    color="#455471"
+                                    color="#800000"
                                     onPress={() => onRemove(index)} />
                             </View>
                         )
@@ -111,14 +110,17 @@ const LoginScreen = ({ route, navigation }) => {
                     <Pressable style={styles.buttonNew} onPress={() => setLinhas([...linhas, {id: undefined, name: ''}])}>
                         <Text style={styles.text}>Nova linha</Text>
                     </Pressable>
-                    <Pressable style={styles.button} onPress={onSubmit}>
+                    <Pressable 
+                        style={styles.button} 
+                        // onPress={onSubmit}
+                    >
                         <Text style={styles.text}>Atualizar novos pontos</Text>
                     </Pressable>
                 </View>
-                {loading && <ActivityIndicator style={{ marginTop: 20 }} color='#455471'/>}
+                {loading && <ActivityIndicator style={{ marginTop: 20 }} color='#800000'/>}
             </View>
         </View>
     )
 }
 
-export default LoginScreen
+export default Estoque

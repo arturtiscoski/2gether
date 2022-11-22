@@ -74,7 +74,8 @@ const AgendaComponent = ({ route, navigation }) => {
             <Agenda
                 theme={{
                     selectedDayBackgroundColor: '#455471',
-                    todayTextColor: '#000'
+                    todayTextColor: '#000',
+                    dotColor: '#455471'
                 }}
                 items={items}
                 renderEmptyData={() => 

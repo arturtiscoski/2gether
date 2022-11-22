@@ -1,7 +1,7 @@
-import axios, { AxiosResponse, AxiosRequestConfig, AxiosInstance } from 'axios';
+import axios, { AxiosResponse, AxiosRequestConfig, AxiosInstance } from "axios";
 
 //PROD
-const API_URL = 'https://api-2gether-theta.vercel.app';
+const API_URL = "https://api-2gether-theta.vercel.app";
 
 //DEV
 // const API_URL = 'http://localhost:3000';
@@ -13,11 +13,11 @@ interface RequestParams {
 }
 
 const HTTP_METHOD = {
-    GET: 'get',
-    POST: 'post',
-    PUT: 'put',
-    PATCH: 'patch',
-    DEL: 'delete',
+    GET: "get",
+    POST: "post",
+    PUT: "put",
+    PATCH: "patch",
+    DEL: "delete",
 };
 
 export const HTTP_STATUS = {
@@ -31,7 +31,7 @@ const api: AxiosInstance = axios.create({
     timeout: 900000,
     withCredentials: true,
     timeoutErrorMessage:
-        'Houston nós temos um problema na conexão. Tente novmente mais tarde',
+        "Houston nós temos um problema na conexão. Tente novmente mais tarde",
 });
 
 class Request {
@@ -48,7 +48,7 @@ class Request {
     public static get<T = any, R = AxiosResponse<T>>(
         path: string,
         data = {},
-        config?: AxiosRequestConfig,
+        config?: AxiosRequestConfig
     ): Promise<R> {
         path += `?${this.queryString(data)}`;
 
@@ -58,7 +58,7 @@ class Request {
     public static post<T = any, R = AxiosResponse<T>>(
         path: string,
         data?: any,
-        config?: AxiosRequestConfig,
+        config?: AxiosRequestConfig
     ): Promise<R> {
         return Request.request({
             method: HTTP_METHOD.POST,
@@ -71,7 +71,7 @@ class Request {
     public static put<T = any, R = AxiosResponse<T>>(
         path: string,
         data?: any,
-        config?: AxiosRequestConfig,
+        config?: AxiosRequestConfig
     ): Promise<R> {
         return Request.request({ method: HTTP_METHOD.PUT, path, data, config });
     }
@@ -79,7 +79,7 @@ class Request {
     public static patch<T = any, R = AxiosResponse<T>>(
         path: string,
         data?: any,
-        config?: AxiosRequestConfig,
+        config?: AxiosRequestConfig
     ): Promise<R> {
         return Request.request<R>({
             method: HTTP_METHOD.PATCH,
@@ -91,7 +91,7 @@ class Request {
 
     public static del<T = any, R = AxiosResponse<T>>(
         path: string,
-        config?: AxiosRequestConfig,
+        config?: AxiosRequestConfig
     ): Promise<R> {
         return Request.request({ method: HTTP_METHOD.DEL, path, config });
     }
@@ -127,7 +127,7 @@ class Request {
     }
 
     private static async httpRequest<R>({
-        method = 'get',
+        method = "get",
         path,
         data,
         config,
@@ -146,10 +146,10 @@ class Request {
 
     private static getConfig(config: object): object {
         return {
-            responseType: 'json',
+            responseType: "json",
             headers: {
                 Authorization: api.defaults.headers.Authorization,
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
             },
             ...config,
         };
@@ -161,7 +161,7 @@ class Request {
                 if (
                     obj &&
                     obj[key] &&
-                    typeof obj[key] == 'object' &&
+                    typeof obj[key] == "object" &&
                     obj[key].length
                 ) {
                     let url: any = [];
@@ -173,19 +173,19 @@ class Request {
                             let valorObjeto = objeto[keyObjeto];
 
                             url.push(
-                                `${key}[${index}][${keyObjeto}]=${valorObjeto}`,
+                                `${key}[${index}][${keyObjeto}]=${valorObjeto}`
                             );
                         });
                     }
 
-                    return url.join('&');
+                    return url.join("&");
                 } else {
                     let url = `${key}=${obj[key]}`;
 
                     return url;
                 }
             })
-            .join('&');
+            .join("&");
     }
 }
 

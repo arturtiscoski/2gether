@@ -4,15 +4,13 @@ import {
     Text,
     View,
     TouchableOpacity,
-    StatusBar,
     Pressable,
-    TextInput
 } from "react-native";
 import DraggableFlatList, { ScaleDecorator } from "react-native-draggable-flatlist";
-import { ActivityIndicator, Card, Checkbox, Modal } from "react-native-paper";
-import Icon from "react-native-vector-icons/AntDesign";
+import { Card, Checkbox, ActivityIndicator } from "react-native-paper";
+import ShopListHttpService from "../http/shoplist-http";
 
-const ARRAY_NUM = 5;
+const ARRAY_NUM = 15;
 function getColor(i) {
     const multiplier = 255 / (ARRAY_NUM - 1);
     const colorVal = i * multiplier;
@@ -40,15 +38,13 @@ const ListaComprasComponent = ({ route, navigation }) => {
         try {
             setLoading(true);
 
-            // const listaCompras = await listaComprasHttpService.index({});
+            console.log('roda aqui?')
 
-            // if (listaCompras?.data?.data) {
-            //     const handledItems = await handleItems(listaCompras.data.data);
+            const response = await ShopListHttpService.index();
 
-            //     console.log("handledItems -> ", handledItems);
+            const data = response?.data?.data;
 
-            //     setItems(handledItems);
-            // }
+            setData(data);
 
             setLoading(false);
         } catch (error) {
@@ -83,7 +79,7 @@ const ListaComprasComponent = ({ route, navigation }) => {
             return;
         }
         return (
-            <ScaleDecorator>
+            <ScaleDecorator key={item.key}>
                 <TouchableOpacity style={styles.item} onLongPress={drag}>
                     {/* {loading && (
                         <ActivityIndicator
@@ -93,25 +89,28 @@ const ListaComprasComponent = ({ route, navigation }) => {
                     )} */}
                     <Card style={{ marginHorizontal: 10 }}>
                         <Card.Content>
-                            <View style={{ flexDirection: "row" }}>
-                                <Icon
+                            <View style={{ flexDirection: "row", alignContent: 'space-between' }}>
+                                {/* <Icon
                                     name="minuscircleo"
                                     style={{ marginTop: 5, marginHorizontal: 5 }}
                                     size={25}
                                     color="#455471"
                                     onPress={() => onRemove(item.index)}
-                                />
-                                <TextInput
+                                /> */}
+                                <Text style={styles.itemCircle}>
+                                    {item.qtd}
+                                </Text>
+                                <Text
                                     style={[styles.input]}
                                     placeholder={"Digite uma breve descrição"}
                                     onChangeText={(text) =>
                                         onChangeText(text, item.index, "name")
                                     }
-                                    value={item.name}
-                                />
+                                >{item.name}</Text>
                                 <Checkbox 
+                                    style={styles.check}
                                     status={item.checked ? "checked" : "unchecked"}
-                                    onPress={() => {item.checked = !item.checked; handleData([...data])}}
+                                    onPress={() => {item.checked = !item.checked; handleOrganization([...data])}}
                                 />
                             </View>
                         </Card.Content>
@@ -121,7 +120,7 @@ const ListaComprasComponent = ({ route, navigation }) => {
         );
     };
 
-    const handleData = (toHandle, org) => {
+    const handleOrganization = (toHandle, org) => {
         const newData = toHandle;
 
         if (org == 'auto' || organization == 'auto') {
@@ -142,41 +141,30 @@ const ListaComprasComponent = ({ route, navigation }) => {
     return (
         <View style={styles.mainContainer}>
             <View style={styles.container}>
-                <TouchableOpacity onPress={() => {
-                        const org = organization == 'manual' ? 'auto' : 'manual'
-                        setOrganization(org)
-                        handleData(data, org)
-                    }}>
-                    <Text style={styles.text}>Organização {organization == 'manual' ? 'manual' : 'automática'} ativada</Text>
-                </TouchableOpacity>
-                <DraggableFlatList
-                    data={data}
-                    onDragEnd={({ data }) => setData(data)}
-                    keyExtractor={(item) => item.index}
-                    renderItem={renderItem}
-                />
                 <View style={{ flexDirection: 'row' }}>
-                    <Pressable
-                        style={styles.buttonNew}
-                        onPress={() =>
-                            setData([...data, {
-                                index: data.length,
-                                key: data.length + 1,
-                                label: String(data.length) + "",
-                                height: 100,
-                                width: 60 + Math.random() * 40,
-                                backgroundColor: getColor(data.length),
-                                checked: false,
-                                name: '',
-                            }])
-                        }
-                    >
-                        <Text style={styles.textButton}>Nova linha</Text>
-                    </Pressable>
-                    <Pressable style={styles.button} onPress={() => console.log()}>
+                    <TouchableOpacity onPress={() => {
+                            const org = organization == 'manual' ? 'auto' : 'manual'
+                            setOrganization(org)
+                            handleOrganization(data, org)
+                        }}>
+                        <Text style={styles.text}>Org. {organization == 'manual' ? 'manual' : 'automática'} ativada</Text>
+                    </TouchableOpacity>
+                    <Pressable style={styles.button} onPress={() => navigation.navigate("Cadastro de item")}>
                         <Text style={styles.textButton}>Cadastrar</Text>
                     </Pressable>
                 </View>
+                <DraggableFlatList
+                    data={data}
+                    onDragEnd={({ data }) => setData(data)}
+                    keyExtractor={(item) => item.key}
+                    renderItem={renderItem}
+                />
+                {loading && (
+                    <ActivityIndicator
+                        style={{ marginTop: 20 }}
+                        color="#455471"
+                    />
+                )}
             </View>
         </View>
 
@@ -202,7 +190,7 @@ const styles = StyleSheet.create({
     },
     text: {
         marginVertical: 10,
-        marginLeft: 32,
+        marginLeft: 35,
         fontSize: 17
     },
     textButton: {
@@ -223,17 +211,32 @@ const styles = StyleSheet.create({
         backgroundColor: "#455471",
     },
     button: {
-        marginTop: 15,
-        marginLeft: 138,
-        paddingVertical: 6,
+        marginVertical: 7,
+        marginLeft: 77,
+        paddingVertical: 4,
         paddingHorizontal: 10,
         borderRadius: 10,
         elevation: 3,
         backgroundColor: "#455471",
     },
     input: {
-        width: '78%'
+        fontSize: 15,
+        marginTop: 6,
+        width: '70%'
     },
+    itemCircle: {
+        backgroundColor: "rgba(231, 224, 236, 1)",
+        marginRight: 10,
+        paddingVertical: 9,
+        paddingHorizontal: 11,
+        textAlign: "center",
+        width: '16%',
+        borderRadius: 11,
+        overflow: "hidden",
+    },
+    check: {
+        alignItems: 'flex-end'
+    }
 });
 
 export default ListaComprasComponent;

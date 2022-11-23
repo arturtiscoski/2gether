@@ -29,7 +29,9 @@ const ListaComprasCadastro = ({ route, navigation }) => {
                 }
 
                 setLoading(false);
-                navigation.navigate("Lista de Compras", { onHide: () => Math.random() });
+                navigation.navigate("Lista de Compras", {
+                    onHide: () => Math.random(),
+                });
             }
         } catch (error) {
             console.log("erro -> ", error);
@@ -80,12 +82,18 @@ const ListaComprasCadastro = ({ route, navigation }) => {
     function MyQtdInput({ onChange, value = 1 }) {
         return (
             <View style={styles.formQtdInput}>
-                <View style={{ flexDirection: "row" }}>
-                    <TouchableOpacity onPress={() => onChange(value - 1)} style={styles.formQtdAction}>
+                <View style={styles.rowCenter}>
+                    <TouchableOpacity
+                        onPress={() => onChange(value - 1)}
+                        style={styles.formQtdAction}
+                    >
                         <Text style={{ color: "#fff" }}>-</Text>
                     </TouchableOpacity>
                     <Text style={styles.formQtdShadow}>{value}</Text>
-                    <TouchableOpacity onPress={() => onChange(value + 1)} style={styles.formQtdAction}>
+                    <TouchableOpacity
+                        onPress={() => onChange(value + 1)}
+                        style={styles.formQtdAction}
+                    >
                         <Text style={{ color: "#fff" }}>+</Text>
                     </TouchableOpacity>
                 </View>
@@ -102,7 +110,15 @@ const ListaComprasCadastro = ({ route, navigation }) => {
                             return;
                         }
                         return (
-                            <View key={index} style={{ flexDirection: "row" }}>
+                            <View
+                                key={index}
+                                style={{
+                                    flexDirection: "row",
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    alignItems: "center",
+                                }}
+                            >
                                 <TextInput
                                     style={[styles.input]}
                                     placeholder={"Digite uma breve descrição"}
@@ -112,17 +128,29 @@ const ListaComprasCadastro = ({ route, navigation }) => {
                                     value={item.name}
                                 />
                                 <MyQtdInput
-                                    onChange={value => onChangeText(value, index, "qtd")}
+                                    onChange={(value) =>
+                                        onChangeText(value, index, "qtd")
+                                    }
                                     value={item.qtd}
                                 />
                             </View>
                         );
                     })}
-                <View style={{ flexDirection: "row" }}>
+                <View
+                    style={{
+                        flexDirection: "row",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                    }}
+                >
                     <Pressable
                         style={styles.buttonNew}
                         onPress={() =>
-                            setLinhas([...linhas, { id: undefined, name: "", qtd: 1 }])
+                            setLinhas([
+                                ...linhas,
+                                { id: undefined, name: "", qtd: 1 },
+                            ])
                         }
                     >
                         <Text style={styles.text}>Nova linha</Text>

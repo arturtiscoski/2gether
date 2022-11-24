@@ -8,5 +8,5 @@ Aplicativo baseado em Expo React-Native para apresentação de conteúdo da mat�
   Vinícius de Lima Xavier
   Max Willian Trajano Martins
   Higor Librelato
-  Elói Jr.
+  Elói de Matos da Silveira
 ```

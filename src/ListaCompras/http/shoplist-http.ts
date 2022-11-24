@@ -5,7 +5,7 @@ export default class ShopListHttpService {
         return Request.get('/listShopList');
     }
 
-    public static save(params: { momento }) {
+    public static save(params) {
         return Request.post('/saveShopList', params);
     }
 }

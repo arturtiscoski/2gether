@@ -38,11 +38,11 @@ const ListaComprasComponent = ({ route, navigation }) => {
         try {
             setLoading(true);
 
-            console.log('roda aqui?')
-
             const response = await ShopListHttpService.index();
 
             const data = response?.data?.data;
+
+            data.map((item, index) => item.key = index)
 
             setData(data);
 
@@ -52,6 +52,28 @@ const ListaComprasComponent = ({ route, navigation }) => {
             console.log("error -> ", error);
         }
     };
+
+    const onSave = async () => {
+        try {
+            setLoading(true);
+
+            data.map((item, index) => item.ordination = index+1)
+
+            console.log('Data -> ', data)
+
+            for (let i = 0; i < data.length; i++) {
+                const dat = data[i];
+
+                await ShopListHttpService.save(dat);
+            }
+
+            setLoading(false);
+            loadListaCompras();
+        } catch (error) {
+            setLoading(false);
+            console.log("error -> ", error);
+        }
+    }
 
     const onChangeText = (value, indexField, field) => {
         const index = data.findIndex((item) => item.index == indexField);
@@ -63,15 +85,6 @@ const ListaComprasComponent = ({ route, navigation }) => {
         data[index] = obj;
 
         setData([...data]);
-    };
-
-    const onRemove = (indexField) => {
-        const index = data.findIndex((item) => item.index == indexField);
-        const newData = [...data];
-
-        newData[index] = { ...newData[index], remove: true };
-
-        setData([...newData]);
     };
 
     const renderItem = ({ item, drag, isActive }) => {
@@ -146,7 +159,8 @@ const ListaComprasComponent = ({ route, navigation }) => {
                             const org = organization == 'manual' ? 'auto' : 'manual'
                             setOrganization(org)
                             handleOrganization(data, org)
-                        }}>
+                        }}
+                        style={{ width: '67.7%' }}>
                         <Text style={styles.text}>Org. {organization == 'manual' ? 'manual' : 'automática'} ativada</Text>
                     </TouchableOpacity>
                     <Pressable style={styles.button} onPress={() => navigation.navigate("Cadastro de item")}>
@@ -159,6 +173,9 @@ const ListaComprasComponent = ({ route, navigation }) => {
                     keyExtractor={(item) => item.key}
                     renderItem={renderItem}
                 />
+                <Pressable style={styles.saveButton} onPress={onSave}>
+                    <Text style={styles.textButton}>Salvar</Text>
+                </Pressable>
                 {loading && (
                     <ActivityIndicator
                         style={{ marginTop: 20 }}
@@ -211,8 +228,20 @@ const styles = StyleSheet.create({
         backgroundColor: "#455471",
     },
     button: {
+        alignItems: 'flex-end',
+        alignSelf: 'flex-end',
         marginVertical: 7,
-        marginLeft: 77,
+        paddingVertical: 4,
+        paddingHorizontal: 10,
+        borderRadius: 10,
+        elevation: 3,
+        backgroundColor: "#455471",
+    },
+    saveButton: {
+        alignItems: 'flex-end',
+        alignSelf: 'flex-end',
+        marginRight: 34,
+        marginVertical: 7,
         paddingVertical: 4,
         paddingHorizontal: 10,
         borderRadius: 10,

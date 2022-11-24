@@ -13,11 +13,11 @@ const ListaComprasCadastro = ({ route, navigation }) => {
     const [loading, setLoading] = useState(false);
 
     const onSubmit = async () => {
-        console.log("onSubmit -> ", linhas);
-
         try {
             setLoading(true);
             const finalLinhas = linhas.filter((linha) => !(linha.name == ""));
+
+            console.log('finalLinhas -> ', finalLinhas);
 
             if (finalLinhas.length > 0) {
                 for (let i = 0; i < finalLinhas.length; i++) {
@@ -29,7 +29,7 @@ const ListaComprasCadastro = ({ route, navigation }) => {
                 }
 
                 setLoading(false);
-                navigation.navigate("Lista de Compras", { onHide: () => Math.random() });
+                navigation.navigate("Lista de Compras", { onHide: Math.random() });
             }
         } catch (error) {
             console.log("erro -> ", error);
@@ -58,19 +58,9 @@ const ListaComprasCadastro = ({ route, navigation }) => {
 
         obj[field] = value;
 
-        linhas[index] = obj;
+        linhas[index] = { ...obj, remove: value == 0 ? true : undefined };
 
         setLinhas([...linhas]);
-    };
-
-    const onRemove = (index) => {
-        const newLinhas = [...linhas];
-
-        newLinhas[index] = { ...newLinhas[index], remove: true };
-
-        console.log("newLinhas -> ", newLinhas);
-
-        setLinhas([...newLinhas]);
     };
 
     useEffect(() => {
@@ -98,6 +88,7 @@ const ListaComprasCadastro = ({ route, navigation }) => {
             <View style={styles.container}>
                 {linhas &&
                     linhas.map((item, index) => {
+                        console.log(item.remove)
                         if (item.remove) {
                             return;
                         }
@@ -122,13 +113,18 @@ const ListaComprasCadastro = ({ route, navigation }) => {
                     <Pressable
                         style={styles.buttonNew}
                         onPress={() =>
-                            setLinhas([...linhas, { id: undefined, name: "", qtd: 1 }])
+                            setLinhas([...linhas, { 
+                                id: undefined, name: "", 
+                                qtd: 1,
+                                checked: false,
+                                ordination: linhas.length + 1
+                            }])
                         }
                     >
                         <Text style={styles.text}>Nova linha</Text>
                     </Pressable>
                     <Pressable style={styles.button} onPress={onSubmit}>
-                        <Text style={styles.text}>Atualizar novos pontos</Text>
+                        <Text style={styles.text}>Atualizar</Text>
                     </Pressable>
                 </View>
                 {loading && (

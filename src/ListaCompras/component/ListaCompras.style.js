@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     buttonNew: {
         alignSelf: "flex-start",
         marginTop: 15,
-        marginRight: 22,
+        marginRight: 125,
         paddingVertical: 6,
         paddingHorizontal: 10,
         borderRadius: 10,

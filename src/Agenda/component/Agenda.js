@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
         flex: 1,
         borderRadius: 5,
         padding: 10,
-        marginRight: 10,
+        marginHorizontal: 25,
         marginTop: 17,
     },
 });

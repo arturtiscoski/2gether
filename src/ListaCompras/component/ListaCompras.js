@@ -6,7 +6,9 @@ import {
     TouchableOpacity,
     Pressable,
 } from "react-native";
-import DraggableFlatList, { ScaleDecorator } from "react-native-draggable-flatlist";
+import DraggableFlatList, {
+    ScaleDecorator,
+} from "react-native-draggable-flatlist";
 import { Card, Checkbox, ActivityIndicator } from "react-native-paper";
 import ShopListHttpService from "../http/shoplist-http";
 
@@ -31,7 +33,7 @@ const initialData = [...Array(ARRAY_NUM)].map((d, index) => {
 const ListaComprasComponent = ({ route, navigation }) => {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
-    const [organization, setOrganization] = useState('manual');
+    const [organization, setOrganization] = useState("manual");
     const params = route.params;
 
     const loadListaCompras = async () => {
@@ -102,10 +104,18 @@ const ListaComprasComponent = ({ route, navigation }) => {
                     )} */}
                     <Card style={{ marginHorizontal: 10 }}>
                         <Card.Content>
-                            <View style={{ flexDirection: "row", alignContent: 'space-between' }}>
+                            <View
+                                style={{
+                                    flexDirection: "row",
+                                    alignContent: "space-between",
+                                }}
+                            >
                                 {/* <Icon
                                     name="minuscircleo"
-                                    style={{ marginTop: 5, marginHorizontal: 5 }}
+                                    style={{
+                                        marginTop: 5,
+                                        marginHorizontal: 5,
+                                    }}
                                     size={25}
                                     color="#455471"
                                     onPress={() => onRemove(item.index)}
@@ -119,11 +129,18 @@ const ListaComprasComponent = ({ route, navigation }) => {
                                     onChangeText={(text) =>
                                         onChangeText(text, item.index, "name")
                                     }
-                                >{item.name}</Text>
-                                <Checkbox 
+                                >
+                                    {item.name}
+                                </Text>
+                                <Checkbox
                                     style={styles.check}
-                                    status={item.checked ? "checked" : "unchecked"}
-                                    onPress={() => {item.checked = !item.checked; handleOrganization([...data])}}
+                                    status={
+                                        item.checked ? "checked" : "unchecked"
+                                    }
+                                    onPress={() => {
+                                        item.checked = !item.checked;
+                                        handleOrganization([...data]);
+                                    }}
                                 />
                             </View>
                         </Card.Content>
@@ -136,16 +153,16 @@ const ListaComprasComponent = ({ route, navigation }) => {
     const handleOrganization = (toHandle, org) => {
         const newData = toHandle;
 
-        if (org == 'auto' || organization == 'auto') {
-            newData.sort(function(x, y) {
-                return (x.checked === y.checked)? 0 : x.checked? 1 : -1;
+        if (org == "auto" || organization == "auto") {
+            newData.sort(function (x, y) {
+                return x.checked === y.checked ? 0 : x.checked ? 1 : -1;
             });
         }
 
-        console.log('newData -> ', newData);
+        console.log("newData -> ", newData);
 
         setData(newData);
-    }   
+    };
 
     useEffect(() => {
         loadListaCompras();
@@ -154,16 +171,32 @@ const ListaComprasComponent = ({ route, navigation }) => {
     return (
         <View style={styles.mainContainer}>
             <View style={styles.container}>
-                <View style={{ flexDirection: 'row' }}>
-                    <TouchableOpacity onPress={() => {
-                            const org = organization == 'manual' ? 'auto' : 'manual'
-                            setOrganization(org)
-                            handleOrganization(data, org)
+                <View
+                    style={{
+                        flexDirection: "row",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                    }}
+                >
+                    <TouchableOpacity
+                        onPress={() => {
+                            const org =
+                                organization == "manual" ? "auto" : "manual";
+                            setOrganization(org);
+                            handleOrganization(data, org);
                         }}
-                        style={{ width: '67.7%' }}>
-                        <Text style={styles.text}>Org. {organization == 'manual' ? 'manual' : 'automática'} ativada</Text>
+                    >
+                        <Text style={styles.text}>
+                            Org.{" "}
+                            {organization == "manual" ? "manual" : "automática"}{" "}
+                            ativada
+                        </Text>
                     </TouchableOpacity>
-                    <Pressable style={styles.button} onPress={() => navigation.navigate("Cadastro de item")}>
+                    <Pressable
+                        style={styles.button}
+                        onPress={() => navigation.navigate("Cadastro de item")}
+                    >
                         <Text style={styles.textButton}>Cadastrar</Text>
                     </Pressable>
                 </View>
@@ -184,7 +217,6 @@ const ListaComprasComponent = ({ route, navigation }) => {
                 )}
             </View>
         </View>
-
     );
 };
 
@@ -195,22 +227,23 @@ const styles = StyleSheet.create({
         backgroundColor: "#f4f4f4",
     },
     container: {
-        width: '100%',
+        width: "100%",
         borderRadius: 10,
         marginBottom: 10,
     },
     item: {
         flex: 1,
         borderRadius: 5,
-        paddingVertical: 5,
-        marginHorizontal: 25
+        paddingVertical: 6,
+        marginHorizontal: 20,
     },
     text: {
         marginVertical: 10,
         marginLeft: 35,
-        fontSize: 17
+        fontSize: 17,
     },
     textButton: {
+        borderRadius: 5,
         fontSize: 16,
         lineHeight: 21,
         fontWeight: "bold",
@@ -221,9 +254,9 @@ const styles = StyleSheet.create({
         alignSelf: "flex-start",
         marginTop: 15,
         marginLeft: 30,
-        paddingVertical: 6,
+        paddingVertical: 10,
         paddingHorizontal: 10,
-        borderRadius: 10,
+        borderRadius: 5,
         elevation: 3,
         backgroundColor: "#455471",
     },
@@ -231,9 +264,10 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
         alignSelf: 'flex-end',
         marginVertical: 7,
+        marginRight: 30,
         paddingVertical: 4,
         paddingHorizontal: 10,
-        borderRadius: 10,
+        borderRadius: 5,
         elevation: 3,
         backgroundColor: "#455471",
     },
@@ -242,16 +276,18 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',
         marginRight: 34,
         marginVertical: 7,
-        paddingVertical: 4,
+        // marginLeft: 77,
+        marginRight: 30,
+        paddingVertical: 10,
         paddingHorizontal: 10,
-        borderRadius: 10,
+        borderRadius: 5,
         elevation: 3,
         backgroundColor: "#455471",
     },
     input: {
         fontSize: 15,
         marginTop: 6,
-        width: '70%'
+        width: "70%",
     },
     itemCircle: {
         backgroundColor: "rgba(231, 224, 236, 1)",
@@ -259,13 +295,13 @@ const styles = StyleSheet.create({
         paddingVertical: 9,
         paddingHorizontal: 11,
         textAlign: "center",
-        width: '16%',
+        width: "16%",
         borderRadius: 11,
         overflow: "hidden",
     },
     check: {
-        alignItems: 'flex-end'
-    }
+        alignItems: "flex-end",
+    },
 });
 
 export default ListaComprasComponent;

@@ -7,7 +7,7 @@ import ListaCompras from "./src/ListaCompras/component/ListaCompras";
 import Logo from "./assets/logo.png";
 import { Button, Surface } from "react-native-paper";
 import LoginScreen from "./src/Agenda/component/AgendaCadastroDia";
-import Estoque from './src/Estoque/component/Estoque';
+import Estoque from "./src/Estoque/component/Estoque";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import ListaComprasCadastro from "./src/ListaCompras/component/ListaComprasCadastro";
 
@@ -16,7 +16,9 @@ function HomeScreen({ navigation }) {
         <View
             style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
         >
-            <Text>Deixe sua vida em conjunto mais fácil e tranquila!</Text>
+            <Text style={{ fontSize: 17 }}>
+                Deixe sua vida em conjunto mais fácil e tranquila!
+            </Text>
             <Image source={Logo} style={styles.logo}></Image>
             <Button
                 textColor="#455471"
@@ -53,12 +55,12 @@ function DetailsScreen({ navigation }) {
                 >
                     Lista de Compras
                 </Button>
-                <Button 
-                    textColor='#455471' 
-                    style={styles.button} 
-                    mode='elevated' 
-                    title='Estoque' 
-                    onPress={() => navigation.navigate('Estoque')} 
+                <Button
+                    textColor="#455471"
+                    style={styles.button}
+                    mode="elevated"
+                    title="Estoque"
+                    onPress={() => navigation.navigate("Estoque")}
                 >
                     Estoque
                 </Button>
@@ -92,10 +94,7 @@ function App() {
                             title: `Data ${route.params.dia}`,
                         })}
                     />
-                    <Stack.Screen 
-                        name="Estoque" 
-                        component={Estoque} 
-                    />
+                    <Stack.Screen name="Estoque" component={Estoque} />
                 </Stack.Navigator>
             </NavigationContainer>
         </GestureHandlerRootView>

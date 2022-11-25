@@ -57,9 +57,12 @@ const LoginScreen = ({ route, navigation }) => {
 
             const response = await AgendaHttpService.getItems(params);
 
-            const data = response?.data?.data[0].agendaItems;
+            if (response?.data?.data.length > 0) {
+                const data = response?.data?.data[0].agendaItems;
 
-            setLinhas(data);
+                setLinhas(data);
+            }
+            
             setLoading(false);
         } catch (error) {
             setLoading(false);

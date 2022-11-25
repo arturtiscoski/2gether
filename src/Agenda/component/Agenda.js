@@ -15,6 +15,7 @@ import moment from "moment";
 const AgendaComponent = ({ route, navigation }) => {
     const [items, setItems] = useState({});
     const [loading, setLoading] = useState(false);
+    const [selectedDay, setSelectedDay] = useState(moment().format('YYYY-MM-DD'));
     const params = route.params;
 
     const loadAgenda = async () => {
@@ -27,7 +28,7 @@ const AgendaComponent = ({ route, navigation }) => {
             if (agenda?.data?.data) {
                 const handledItems = await handleItems(agenda.data.data);
 
-                console.log("handledItems -> ", handledItems);
+                console.log('handledItems -> ', handledItems);
 
                 setItems(handledItems);
             }
@@ -71,12 +72,6 @@ const AgendaComponent = ({ route, navigation }) => {
                         </View>
                     </Card.Content>
                 </Card>
-                {loading && (
-                    <ActivityIndicator
-                        style={{ marginTop: 20 }}
-                        color="#455471"
-                    />
-                )}
             </TouchableOpacity>
         );
     };
@@ -101,7 +96,7 @@ const AgendaComponent = ({ route, navigation }) => {
                                 </View>
                             </Card.Content>
                         </Card>
-                        {loading && (
+                        {loading == true && (
                             <ActivityIndicator
                                 style={{ marginTop: 20 }}
                                 color="#455471"
@@ -109,9 +104,6 @@ const AgendaComponent = ({ route, navigation }) => {
                         )}
                     </TouchableOpacity>
                 )}
-                onDayPress={(day) => {
-                    console.log("day pressed");
-                }}
                 onDayLongPress={(day) => {
                     console.log("dia -> ", day);
                     navigation.navigate("Cadastro de dias", {
@@ -120,13 +112,11 @@ const AgendaComponent = ({ route, navigation }) => {
                         ),
                     });
                 }}
-                selected={moment().format()}
                 refreshControl={null}
                 showClosingKnob={true}
                 refreshing={false}
                 renderItem={renderItem}
             />
-            <StatusBar />
         </View>
     );
 };

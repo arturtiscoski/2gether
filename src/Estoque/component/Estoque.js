@@ -9,7 +9,7 @@ import {
 import DraggableFlatList, { ScaleDecorator } from "react-native-draggable-flatlist";
 import { Card, Checkbox, ActivityIndicator } from "react-native-paper";
 import EstoqueHttpService from "../http/estoque-http";
-import { MyQtdInput } from '../../ListaCompras/component/ListaComprasCadastro';
+import { MyQtdInput } from '../../utils/components/CadastroItem';
 
 const ARRAY_NUM = 15;
 function getColor(i) {
@@ -88,7 +88,6 @@ const EstoqueComponent = ({ route, navigation }) => {
     };
 
     const renderItem = ({ item, drag, isActive }) => {
-        console.log('item.key -> ', item.key);
         if (item.remove) {
             return;
         }
@@ -145,7 +144,7 @@ const EstoqueComponent = ({ route, navigation }) => {
             <View style={styles.container}>
                 <View style={{ flexDirection: 'row' }}>
                     <View style={{ width: '67.7%' }}/>
-                    <Pressable style={styles.button} onPress={() => navigation.navigate("Cadastro de item")}>
+                    <Pressable style={styles.button} onPress={() => navigation.navigate("Cadastro de item", { type: 'ESTOQUE' })}>
                         <Text style={styles.textButton}>Cadastrar</Text>
                     </Pressable>
                 </View>

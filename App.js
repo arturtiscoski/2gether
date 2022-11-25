@@ -9,7 +9,7 @@ import { Button, Surface } from "react-native-paper";
 import LoginScreen from "./src/Agenda/component/AgendaCadastroDia";
 import Estoque from "./src/Estoque/component/Estoque";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import ListaComprasCadastro from "./src/ListaCompras/component/ListaComprasCadastro";
+import CadastroItem from "./src/utils/components/CadastroItem";
 
 function HomeScreen({ navigation }) {
     return (
@@ -85,7 +85,7 @@ function App() {
                     />
                     <Stack.Screen
                         name="Cadastro de item"
-                        component={ListaComprasCadastro}
+                        component={CadastroItem}
                     />
                     <Stack.Screen
                         name="Cadastro de dias"

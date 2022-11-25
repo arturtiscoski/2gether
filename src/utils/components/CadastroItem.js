@@ -1,12 +1,13 @@
 // @flow
 import React, { useEffect, useState } from "react";
 import { Text, TextInput, View, Button, Pressable } from "react-native";
-import styles from "./ListaCompras.style";
-import ShopListHttpService from "../http/shoplist-http";
+import styles from "./cadastroItem.style";
+import ShopListHttpService from "../../ListaCompras/http/shoplist-http";
 import moment from "moment";
 import { ActivityIndicator } from "react-native-paper";
 import Icon from "react-native-vector-icons/AntDesign";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import EstoqueHttpService from "../../Estoque/http/estoque-http";
 
 export function MyQtdInput({ onChange, value = 1 }) {
     return (
@@ -30,9 +31,10 @@ export function MyQtdInput({ onChange, value = 1 }) {
     );
 }
 
-const ListaComprasCadastro = ({ route, navigation }) => {
+const CadastroItemCadastro = ({ route, navigation }) => {
     const [linhas, setLinhas] = useState([]);
     const [loading, setLoading] = useState(false);
+    const props = route.params;
 
     const onSubmit = async () => {
         try {
@@ -45,13 +47,21 @@ const ListaComprasCadastro = ({ route, navigation }) => {
                 for (let i = 0; i < finalLinhas.length; i++) {
                     const linha = finalLinhas[i];
 
-                    await ShopListHttpService.save({
-                        ...linha,
-                    });
+                    console.log('props.type -> ', props.type);
+
+                    if (props.type == 'LISTACOMPRA') {
+                        await ShopListHttpService.save({
+                            ...linha,
+                        });
+                    } else if (props.type == 'ESTOQUE') {
+                        await EstoqueHttpService.save({
+                            ...linha,
+                        });
+                    }
                 }
 
                 setLoading(false);
-                navigation.navigate("Lista de Compras", {
+                navigation.navigate(props.type == 'LISTACOMPRA' ? "Lista de Compras" : "Estoque", {
                     onHide: () => Math.random(),
                 });
             }
@@ -65,7 +75,7 @@ const ListaComprasCadastro = ({ route, navigation }) => {
     const onLoad = async () => {
         try {
             setLoading(true);
-            const response = await ShopListHttpService.index();
+            const response = props.type == 'LISTACOMPRA' ? await ShopListHttpService.index() : await EstoqueHttpService.index();
 
             const data = response?.data?.data;
 
@@ -96,7 +106,6 @@ const ListaComprasCadastro = ({ route, navigation }) => {
             <View style={styles.container}>
                 {linhas &&
                     linhas.map((item, index) => {
-                        console.log(item.remove)
                         if (item.remove) {
                             return;
                         }
@@ -163,4 +172,4 @@ const ListaComprasCadastro = ({ route, navigation }) => {
     );
 };
 
-export default ListaComprasCadastro;
+export default CadastroItemCadastro;

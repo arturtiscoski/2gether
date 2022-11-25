@@ -195,7 +195,7 @@ const ListaComprasComponent = ({ route, navigation }) => {
                     </TouchableOpacity>
                     <Pressable
                         style={styles.button}
-                        onPress={() => navigation.navigate("Cadastro de item")}
+                        onPress={() => navigation.navigate("Cadastro de item", { type: 'LISTACOMPRA' })}
                     >
                         <Text style={styles.textButton}>Cadastrar</Text>
                     </Pressable>

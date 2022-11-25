@@ -8,7 +8,8 @@ import {
 } from "react-native";
 import DraggableFlatList, { ScaleDecorator } from "react-native-draggable-flatlist";
 import { Card, Checkbox, ActivityIndicator } from "react-native-paper";
-// import ShopListHttpService from "../http/shoplist-http";
+import EstoqueHttpService from "../http/estoque-http";
+import { MyQtdInput } from '../../ListaCompras/component/ListaComprasCadastro';
 
 const ARRAY_NUM = 15;
 function getColor(i) {
@@ -30,19 +31,18 @@ const initialData = [...Array(ARRAY_NUM)].map((d, index) => {
 
 const EstoqueComponent = ({ route, navigation }) => {
     const [loading, setLoading] = useState(false);
-    const [data, setData] = useState(initialData);
-    const [organization, setOrganization] = useState('manual');
+    const [data, setData] = useState([]);
     const params = route.params;
 
-    const loadListaCompras = async () => {
+    const loadEstoque = async () => {
         try {
             setLoading(true);
 
-            // const response = await ShopListHttpService.index();
+            const response = await EstoqueHttpService.index();
 
-            // const data = response?.data?.data;
+            const data = response?.data?.data;
 
-            // data.map((item, index) => item.key = index)
+            data.map((item, index) => item.key = index)
 
             setData(data);
 
@@ -61,14 +61,14 @@ const EstoqueComponent = ({ route, navigation }) => {
 
             console.log('Data -> ', data)
 
-            // for (let i = 0; i < data.length; i++) {
-            //     const dat = data[i];
+            for (let i = 0; i < data.length; i++) {
+                const dat = data[i];
 
-            //     await ShopListHttpService.save(dat);
-            // }
+                await EstoqueHttpService.save(dat);
+            }
 
             setLoading(false);
-            loadListaCompras();
+            loadEstoque();
         } catch (error) {
             setLoading(false);
             console.log("error -> ", error);
@@ -76,18 +76,19 @@ const EstoqueComponent = ({ route, navigation }) => {
     }
 
     const onChangeText = (value, indexField, field) => {
-        const index = data.findIndex((item) => item.index == indexField);
+        const index = data.findIndex((item) => item.key == indexField);
 
         const obj = data[index];
 
         obj[field] = value;
 
-        data[index] = obj;
+        data[index] = { ...obj, remove: value == 0 ? true : undefined };;
 
         setData([...data]);
     };
 
     const renderItem = ({ item, drag, isActive }) => {
+        console.log('item.key -> ', item.key);
         if (item.remove) {
             return;
         }
@@ -110,21 +111,23 @@ const EstoqueComponent = ({ route, navigation }) => {
                                     color="#455471"
                                     onPress={() => onRemove(item.index)}
                                 /> */}
-                                <Text style={styles.itemCircle}>
+                                {/* <Text style={styles.itemCircle}>
                                     {item.qtd}
-                                </Text>
+                                </Text> */}
                                 <Text
                                     style={[styles.input]}
-                                    placeholder={"Digite uma breve descrição"}
-                                    onChangeText={(text) =>
-                                        onChangeText(text, item.index, "name")
-                                    }
                                 >{item.name}</Text>
-                                <Checkbox 
+                                <MyQtdInput
+                                    onChange={(value) =>
+                                        onChangeText(value, item.key, "qtd")
+                                    }
+                                    value={item.qtd}
+                                />
+                                {/* <Checkbox 
                                     style={styles.check}
                                     status={item.checked ? "checked" : "unchecked"}
                                     onPress={() => {item.checked = !item.checked; handleOrganization([...data])}}
-                                />
+                                /> */}
                             </View>
                         </Card.Content>
                     </Card>
@@ -133,36 +136,15 @@ const EstoqueComponent = ({ route, navigation }) => {
         );
     };
 
-    const handleOrganization = (toHandle, org) => {
-        const newData = toHandle;
-
-        if (org == 'auto' || organization == 'auto') {
-            newData.sort(function(x, y) {
-                return (x.checked === y.checked)? 0 : x.checked? 1 : -1;
-            });
-        }
-
-        console.log('newData -> ', newData);
-
-        setData(newData);
-    }   
-
     useEffect(() => {
-        loadListaCompras();
+        loadEstoque();
     }, [params?.onHide]);
 
     return (
         <View style={styles.mainContainer}>
             <View style={styles.container}>
                 <View style={{ flexDirection: 'row' }}>
-                    <TouchableOpacity onPress={() => {
-                            const org = organization == 'manual' ? 'auto' : 'manual'
-                            setOrganization(org)
-                            handleOrganization(data, org)
-                        }}
-                        style={{ width: '67.7%' }}>
-                        <Text style={styles.text}>Org. {organization == 'manual' ? 'manual' : 'automática'} ativada</Text>
-                    </TouchableOpacity>
+                    <View style={{ width: '67.7%' }}/>
                     <Pressable style={styles.button} onPress={() => navigation.navigate("Cadastro de item")}>
                         <Text style={styles.textButton}>Cadastrar</Text>
                     </Pressable>
@@ -251,7 +233,7 @@ const styles = StyleSheet.create({
     input: {
         fontSize: 15,
         marginTop: 6,
-        width: '70%'
+        width: '69.5%'
     },
     itemCircle: {
         backgroundColor: "rgba(231, 224, 236, 1)",

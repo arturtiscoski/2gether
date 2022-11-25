@@ -8,6 +8,28 @@ import { ActivityIndicator } from "react-native-paper";
 import Icon from "react-native-vector-icons/AntDesign";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
+export function MyQtdInput({ onChange, value = 1 }) {
+    return (
+        <View style={styles.formQtdInput}>
+            <View style={styles.rowCenter}>
+                <TouchableOpacity
+                    onPress={() => onChange(value - 1)}
+                    style={styles.formQtdAction}
+                >
+                    <Text style={{ color: "#fff" }}>-</Text>
+                </TouchableOpacity>
+                <Text style={styles.formQtdShadow}>{value}</Text>
+                <TouchableOpacity
+                    onPress={() => onChange(value + 1)}
+                    style={styles.formQtdAction}
+                >
+                    <Text style={{ color: "#fff" }}>+</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+    );
+}
+
 const ListaComprasCadastro = ({ route, navigation }) => {
     const [linhas, setLinhas] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -68,28 +90,6 @@ const ListaComprasCadastro = ({ route, navigation }) => {
     useEffect(() => {
         onLoad();
     }, []);
-
-    function MyQtdInput({ onChange, value = 1 }) {
-        return (
-            <View style={styles.formQtdInput}>
-                <View style={styles.rowCenter}>
-                    <TouchableOpacity
-                        onPress={() => onChange(value - 1)}
-                        style={styles.formQtdAction}
-                    >
-                        <Text style={{ color: "#fff" }}>-</Text>
-                    </TouchableOpacity>
-                    <Text style={styles.formQtdShadow}>{value}</Text>
-                    <TouchableOpacity
-                        onPress={() => onChange(value + 1)}
-                        style={styles.formQtdAction}
-                    >
-                        <Text style={{ color: "#fff" }}>+</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        );
-    }
 
     return (
         <View style={styles.mainContainer}>
